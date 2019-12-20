@@ -1,10 +1,9 @@
 import React from 'react';
+import Canvas from "./components/canvas/Canvas";
 
 const App = () => {
   return (
-    <div>
-      app
-    </div>
+    <Canvas/>
   );
 };
 
