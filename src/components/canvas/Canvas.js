@@ -2,6 +2,8 @@ import React from 'react'
 import city from '../../static/artur-aldyrkhanov-unsplash_small.jpg'
 import styles from './Canvas.module.scss';
 import {firework} from '../firework/Firework';
+import {Background} from '../firework/Background';
+import {vecLength} from "../utils/utils";
 
 export default class Canvas extends React.Component {
   constructor(props) {
@@ -11,45 +13,48 @@ export default class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    const ctx     = this.canvasRef.current.getContext('2d');
-    let counter   = 0;
-    let xDistance = 100;
-    let yDistance = 100;
-    let intID     = 0;
-    let globalAlpha = 0.5;
+    const ctx       = this.canvasRef.current.getContext('2d');
+    let counter     = 0;
+    let vx          = 350;
+    let vy          = 470;
+    let intID       = 0;
+    let globalAlpha = 0.4;
+    let timeout     = 30;
+
+    ctx.drawImage(this.imgRef.current, 0, 0);
+
+    const boundaries = (x, y) => {
+      const isX = x > 100 && x < 700;
+      const isY = y > 100 && x < 450;
+      return isX === true && isY === true;
+    };
 
     const loop = () => {
-      counter   = counter + 1;
-      xDistance = xDistance + 1;
-      yDistance = yDistance + 1.5;
+      counter = counter + 1;
+      vx      = vx - 1;
+      vy      = vy - 1.5;
 
-      if (counter > 10) {
-        console.log(counter);
+      if (!boundaries(vx, vy)) {
+        console.log('End of step one - Rocket is up', counter);
         clearInterval(intID);
         globalAlpha = 1;
-        testDistance();
       }
 
-      ctx.beginPath();
-      ctx.save();
-      ctx.globalAlpha = globalAlpha;
-      ctx.drawImage(this.imgRef.current, 0, 0);
-      ctx.font      = "40px Courier";
-      ctx.fillStyle = "white";
-      ctx.fillText('This is some text', 0, 75);
-
-      firework(ctx, xDistance, yDistance);
+      Background(ctx, this.imgRef, globalAlpha);
+      testCircle();
+      firework(ctx, vx, vy);
     };
+
     this.imgRef.current.onload = () => {
-      intID = setInterval(() => loop(), 30);
+      intID = setInterval(loop, timeout);
     };
 
-    const testDistance = () => {
+    const testCircle = () => {
       console.log('test');
       ctx.beginPath();
-      ctx.arc(100, 100, 5, 0, Math.PI * 2, true);
+      ctx.arc(350, 470, 5, 0, Math.PI * 2, true);
       ctx.strokeStyle = 'rgb(255,255,255)';
-      ctx.fillStyle = 'yellow';
+      ctx.fillStyle   = 'yellow';
       ctx.fill();
       ctx.stroke();
     }
