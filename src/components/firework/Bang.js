@@ -1,27 +1,27 @@
 import {Rocket} from "./Rocket";
 import {Background} from "./Background";
+import {random, randomColor} from "../utils/utils";
 
-function RocketClass(ctx, vx, vy, img, gravity) {
-  this.vx = vx;
-  this.vy = vy;
-  this.ctx = ctx;
-  this.gravity = gravity;
-  this.img = img;
+function RocketClass({ctx, x, y, img, gravity, color, angle, velocity}) {
+  this.vx      = x;
+  this.vy      = y;
+  this.ctx     = ctx;
+  this.img     = img;
   this.counter = 0;
-  this.intID = 0;
+  this.intID   = 0;
+  this.gravity = gravity;
 
   const loop = () => {
-    console.log('loop');
-
     this.counter = this.counter + 1;
     this.gravity = this.gravity + 0.02;
 
-    this.vx      = (this.vx + (1)); // direction or angle of the rocket
-    this.vy      = (this.vy - (2 - gravity)); // velocity and gravity
-    Rocket(this.ctx, this.vx, vy, 'white', 'white');
+    this.vx = (this.vx + (angle)); // direction or angle of the rocket
+    this.vy = (this.vy - (velocity - this.gravity)); // velocity and gravity
 
+    Rocket(this.ctx, this.vx, this.vy, color, color);
     setTimeout(() => Background(this.ctx, this.img, 0.1), 200);
-    if (this.counter > 100) {
+
+    if (this.counter > 120) {
       console.log('vx: ', this.vx);
       console.log('vy: ', this.vy);
       //Rocket(ctx, vx, vy, 'rgba(0.0.0.0)', 'rgba(0.0.0.0)');
@@ -30,8 +30,21 @@ function RocketClass(ctx, vx, vy, img, gravity) {
     }
   };
 
-  this.intID = setInterval(loop, 40);
+  this.intID = setInterval(loop, 60);
 }
+
+const randomizeRocketParams = ({ctx, x, y, img, gravity, color, angle, velocity}) => {
+  return {
+    ctx,
+    x,
+    y,
+    img,
+    gravity,
+    color,
+    angle,
+    velocity
+  }
+};
 
 /**
  *
@@ -43,36 +56,20 @@ function RocketClass(ctx, vx, vy, img, gravity) {
  */
 export const Bang = (ctx, x, y, img) => {
   // Multiple rockets
-  console.log('bang starts here');
-  const timeout = 40;
-  let counter   = 0;
-  let gravity   = 0.1;
-  let vx        = x;
-  let vy        = y;
+  console.log('bang starts here', randomColor());
+  let gravity       = 0.1;
+  const rocketProps = () => randomizeRocketParams({
+    ctx,
+    x,
+    y,
+    img,
+    gravity,
+    color:    `#${randomColor()}`,
+    angle:    random(-3, 3),
+    velocity: random(-1, 1)
+  });
 
-  const rocket1 = new RocketClass(ctx, vx, vy, img, 0.1);
-  console.log('rocket1: ', rocket1);
-
-  const loop = () => {
-    console.log('loop');
-
-    counter = counter + 1;
-    gravity = gravity + 0.02;
-
-    vx      = (vx + (-1)); // direction or angle of the rocket
-    vy      = (vy - (2 - gravity)); // velocity and gravity
-    Rocket(ctx, vx, vy, 'red', 'red');
-
-    setTimeout(() => Background(ctx, img, 0.1), 200);
-    if (counter > 100) {
-      console.log('vx: ', vx);
-      console.log('vy: ', vy);
-      //Rocket(ctx, vx, vy, 'rgba(0.0.0.0)', 'rgba(0.0.0.0)');
-      //Background(ctx, img, 1);
-      clearInterval(intID);
-    }
-
-  };
-
-  const intID = setInterval(loop, timeout);
+  for(let i = 0; i < 5; i++) {
+    setTimeout(() => new RocketClass(rocketProps()), 10);
+  }
 };
