@@ -1,9 +1,8 @@
 import React from 'react'
 import city from '../../static/artur-aldyrkhanov-unsplash_small.jpg'
 import styles from './Canvas.module.scss';
-import {firework} from '../firework/Firework';
+import {rocket} from '../firework/Rocket';
 import {Background} from '../firework/Background';
-import {vecLength} from "../utils/utils";
 
 export default class Canvas extends React.Component {
   constructor(props) {
@@ -25,28 +24,31 @@ export default class Canvas extends React.Component {
 
     const boundaries = (x, y) => {
       const isX = x > 100 && x < 700;
-      const isY = y > 100 && x < 450;
+      const isY = y > 100 && y < 470;
       return isX === true && isY === true;
     };
 
-    const loop = () => {
-      counter = counter + 1;
-      vx      = vx - 1;
-      vy      = vy - 1.5;
-
-      if (!boundaries(vx, vy)) {
-        console.log('End of step one - Rocket is up', counter);
-        clearInterval(intID);
-        globalAlpha = 1;
-      }
+    const fireRocketUpLoop = () => {
+      counter      = counter + 1;
+      vx           = (vx + 1.5);
+      vy           = (vy - 2);
 
       Background(ctx, this.imgRef, globalAlpha);
+      rocket(ctx, vx, vy);
+
+      if (!boundaries(vx, vy)) {
+        console.log('End of step one - Rocket is up', vx, vy, counter); //627.5 100 185
+        clearInterval(intID);
+        globalAlpha = 1;
+        Background(ctx, this.imgRef, globalAlpha);
+        rocket(ctx, vx, vy);
+      }
+
       testCircle();
-      firework(ctx, vx, vy);
     };
 
     this.imgRef.current.onload = () => {
-      intID = setInterval(loop, timeout);
+      intID = setInterval(fireRocketUpLoop, timeout);
     };
 
     const testCircle = () => {
