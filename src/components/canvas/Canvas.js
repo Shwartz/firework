@@ -3,6 +3,7 @@ import city from '../../static/artur-aldyrkhanov-unsplash_small.jpg'
 import styles from './Canvas.module.scss';
 import {rocket} from '../firework/Rocket';
 import {Background} from '../firework/Background';
+import {Bang} from "../firework/Bang";
 
 export default class Canvas extends React.Component {
   constructor(props) {
@@ -14,6 +15,7 @@ export default class Canvas extends React.Component {
   componentDidMount() {
     const ctx       = this.canvasRef.current.getContext('2d');
     let counter     = 0;
+    let gravity     = 0.1;
     let vx          = 350;
     let vy          = 470;
     let intID       = 0;
@@ -29,19 +31,22 @@ export default class Canvas extends React.Component {
     };
 
     const fireRocketUpLoop = () => {
-      counter      = counter + 1;
-      vx           = (vx + 1.5);
-      vy           = (vy - 2);
+      counter = counter + 1;
+      gravity = gravity + 0.02;
+      vx      = (vx + 1);
+      vy      = (vy - (4 - gravity));
 
       Background(ctx, this.imgRef, globalAlpha);
       rocket(ctx, vx, vy);
 
       if (!boundaries(vx, vy)) {
+        // Loop is over, rocket reach maximum and explodes
         console.log('End of step one - Rocket is up', vx, vy, counter); //627.5 100 185
         clearInterval(intID);
         globalAlpha = 1;
         Background(ctx, this.imgRef, globalAlpha);
         rocket(ctx, vx, vy);
+        Bang(ctx, vx, vy);
       }
 
       testCircle();
