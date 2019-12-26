@@ -1,7 +1,7 @@
 import React from 'react'
 import city from '../../static/artur-aldyrkhanov-unsplash_small.jpg'
 import styles from './Canvas.module.scss';
-import {rocket} from '../firework/Rocket';
+import {Rocket} from '../firework/Rocket';
 import {Background} from '../firework/Background';
 import {Bang} from "../firework/Bang";
 
@@ -14,7 +14,7 @@ export default class Canvas extends React.Component {
 
   componentDidMount() {
     const ctx       = this.canvasRef.current.getContext('2d');
-    let counter     = 0;
+    const canvas    = this.canvasRef.current;
     let gravity     = 0.1;
     let vx          = 350;
     let vy          = 470;
@@ -31,21 +31,20 @@ export default class Canvas extends React.Component {
     };
 
     const fireRocketUpLoop = () => {
-      counter = counter + 1;
       gravity = gravity + 0.02;
-      vx      = (vx + 1);
-      vy      = (vy - (4 - gravity));
+      vx      = (vx + 1); // direction or angle of the rocket
+      vy      = (vy - (4 - gravity)); // velocity and gravity
 
       Background(ctx, this.imgRef, globalAlpha);
-      rocket(ctx, vx, vy);
+      Rocket(ctx, vx, vy);
 
       if (!boundaries(vx, vy)) {
-        // Loop is over, rocket reach maximum and explodes
-        console.log('End of step one - Rocket is up', vx, vy, counter); //627.5 100 185
+        // Loop is over, Rocket reach maximum and explodes
+        console.log('End of step one - Rocket is up', vx, vy); //627.5 100 185
         clearInterval(intID);
         globalAlpha = 1;
         Background(ctx, this.imgRef, globalAlpha);
-        rocket(ctx, vx, vy);
+        Rocket(ctx, vx, vy, 'rgb(255,255,255)', 'rgb(255,255,255)');
         Bang(ctx, vx, vy);
       }
 
@@ -53,7 +52,9 @@ export default class Canvas extends React.Component {
     };
 
     this.imgRef.current.onload = () => {
-      intID = setInterval(fireRocketUpLoop, timeout);
+      //intID = setInterval(fireRocketUpLoop, timeout);
+      Background(ctx, this.imgRef, 1);
+      Bang(ctx, 627.5, 100, this.imgRef, canvas);
     };
 
     const testCircle = () => {
