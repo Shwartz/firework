@@ -45,20 +45,19 @@ export default class Canvas extends React.Component {
         globalAlpha = 1;
         Background(ctx, this.imgRef, globalAlpha);
         Rocket(ctx, vx, vy, 'rgb(255,255,255)', 'rgb(255,255,255)');
-        Bang(ctx, vx, vy);
+        Bang(ctx, vx, vy, this.imgRef, canvas);
       }
 
       testCircle();
     };
 
     this.imgRef.current.onload = () => {
-      //intID = setInterval(fireRocketUpLoop, timeout);
+      intID = setInterval(fireRocketUpLoop, timeout);
       Background(ctx, this.imgRef, 1);
-      Bang(ctx, 627.5, 100, this.imgRef, canvas);
+      // Bang(ctx, 527.5, 100, this.imgRef, canvas);
     };
 
     const testCircle = () => {
-      console.log('test');
       ctx.beginPath();
       ctx.arc(350, 470, 5, 0, Math.PI * 2, true);
       ctx.strokeStyle = 'rgb(255,255,255)';
@@ -89,3 +88,4 @@ export default class Canvas extends React.Component {
 }
 
 // Photo by Artur Aldyrkhanov on Unsplash
+// http://hslpicker.com/#f00
