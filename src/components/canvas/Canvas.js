@@ -3,8 +3,9 @@ import city from '../../static/artur-aldyrkhanov-unsplash_small.jpg'
 import styles from './Canvas.module.scss';
 import {Rocket} from '../firework/Rocket';
 import {Background} from '../firework/Background';
-import {Config} from "../firework/Config";
+import {FireworkConfig} from "../firework/FireworkConfig";
 import AnimationFrame from "../utils/AnimationFrame";
+import {random} from "../utils/utils";
 
 export default class Canvas extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ export default class Canvas extends React.Component {
   componentDidMount() {
     const ctx       = this.canvasRef.current.getContext('2d');
     const canvas    = this.canvasRef.current;
+    const direction = random(-2, 2);
     let gravity     = 0.1;
     let vx          = 350;
     let vy          = 470;
@@ -31,9 +33,9 @@ export default class Canvas extends React.Component {
       return isX === true && isY === true;
     };
 
-    const fireworkSimple = () => {
+    const rocket = () => {
       gravity = gravity + 0.02;
-      vx      = (vx + 1); // direction or angle of the rocket
+      vx      = (vx + direction + random(-0.5, 0.5)); // direction or angle of the rocket
       vy      = (vy - (4 - gravity)); // velocity and gravity
 
       Background(ctx, this.imgRef, globalAlpha);
@@ -46,14 +48,14 @@ export default class Canvas extends React.Component {
         globalAlpha = 1;
         Background(ctx, this.imgRef, globalAlpha);
         Rocket(ctx, vx, vy, 'rgb(255,255,255)', 'rgb(255,255,255)');
-        Config(ctx, vx, vy, this.imgRef, canvas);
+        FireworkConfig(ctx, vx, vy, this.imgRef, canvas);
         animationSimple.stop();
       }
 
       testCircle();
     };
 
-    const animationSimple = new AnimationFrame(fireworkSimple, 50);
+    const animationSimple = new AnimationFrame(rocket, 30);
 
     this.imgRef.current.onload = () => {
       animationSimple.start();
@@ -90,6 +92,15 @@ export default class Canvas extends React.Component {
     )
   }
 }
+/**
+ * NOTES
+ * Photo by Artur Aldyrkhanov on Unsplash
+ * http://hslpicker.com/#f00
+ *
+ * TODO:
+ * - Loop for a new firework
+ * - randomize Rocket angle
+ * - Speedy ones should be bigger
+ */
 
-// Photo by Artur Aldyrkhanov on Unsplash
-// http://hslpicker.com/#f00
+

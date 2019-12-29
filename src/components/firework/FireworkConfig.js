@@ -24,7 +24,7 @@ const randomizeRocketParams = ({ctx, x, y, img, gravity, color, angle, velocity,
  * @param canvas - Canvas element
  * @constructor
  */
-export const Config = (ctx, x, y, img, canvas) => {
+export const FireworkConfig = (ctx, x, y, img, canvas) => {
   // Multiple rockets
   console.log('===> canvas: ', canvas);
   let gravity          = 0.1;

@@ -14,7 +14,7 @@ class AnimationFrame {
       this.requestID = window.requestAnimationFrame(animateLoop);
       const delta = now - then;
 
-      if (delta >= interval - tolerance) {
+      if (delta >= interval - tolerance && delta > this.fps) {
         then = now - (delta % interval);
         this.animate(delta);
       }
