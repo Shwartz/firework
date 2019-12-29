@@ -5,9 +5,7 @@ import {colorHsl, percentage, random} from "../utils/utils";
 const boundaries = (x, y, canvas) => {
   const {width, height} = canvas;
   const isX             = x > 100 && x < width - 100;
-  const isY             = y < height - 250;
-  console.log('isX: ', isX);
-  console.log('isY: , isY');
+  const isY             = y < height - 350;
   return isX === true && isY === true;
 };
 
@@ -23,8 +21,7 @@ function RocketClass({ctx, x, y, img, gravity, color, angle, velocity, canvas}) 
   this.speedConstant     = random(0.005, 0.05);
   this.isAnimation       = true;
   this.colorFadeConstant = 50;
-  console.log('canvas', canvas);
-  console.log('canvas', this.canvas);
+
   const {
           colorRing,
           saturation,
@@ -38,8 +35,8 @@ function RocketClass({ctx, x, y, img, gravity, color, angle, velocity, canvas}) 
     const color     = colorHsl(colorRing, saturation, lightness, opacity);
     const stepsLeft = this.steps - this.counter;
 
-    this.vx = (this.vx + (angle) * 0.6); // direction or angle of the rocket
-    this.vy = (this.vy - (velocity - this.gravity) * 0.3); // velocity and gravity
+    this.vx = (this.vx + (angle)); // direction or angle of the rocket
+    this.vy = (this.vy - (velocity - this.gravity)); // velocity and gravity
 
     if (this.counter < this.steps && this.isAnimation) {
       if (stepsLeft > this.colorFadeConstant) {
@@ -59,7 +56,7 @@ function RocketClass({ctx, x, y, img, gravity, color, angle, velocity, canvas}) 
       window.requestAnimationFrame(loop);
     } else {
       // end of a loop
-
+      // background refresh and callback about finish(?)
     }
   };
 

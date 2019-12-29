@@ -3,7 +3,8 @@ import city from '../../static/artur-aldyrkhanov-unsplash_small.jpg'
 import styles from './Canvas.module.scss';
 import {Rocket} from '../firework/Rocket';
 import {Background} from '../firework/Background';
-import {Bang} from "../firework/Bang";
+import {Config} from "../firework/Config";
+import AnimationFrame from "../utils/AnimationFrame";
 
 export default class Canvas extends React.Component {
   constructor(props) {
@@ -30,7 +31,7 @@ export default class Canvas extends React.Component {
       return isX === true && isY === true;
     };
 
-    const fireRocketUpLoop = () => {
+    const fireworkSimple = () => {
       gravity = gravity + 0.02;
       vx      = (vx + 1); // direction or angle of the rocket
       vy      = (vy - (4 - gravity)); // velocity and gravity
@@ -45,14 +46,17 @@ export default class Canvas extends React.Component {
         globalAlpha = 1;
         Background(ctx, this.imgRef, globalAlpha);
         Rocket(ctx, vx, vy, 'rgb(255,255,255)', 'rgb(255,255,255)');
-        Bang(ctx, vx, vy, this.imgRef, canvas);
+        Config(ctx, vx, vy, this.imgRef, canvas);
+        animationSimple.stop();
       }
 
       testCircle();
     };
 
+    const animationSimple = new AnimationFrame(fireworkSimple, 50);
+
     this.imgRef.current.onload = () => {
-      intID = setInterval(fireRocketUpLoop, timeout);
+      animationSimple.start();
       Background(ctx, this.imgRef, 1);
       // Bang(ctx, 527.5, 100, this.imgRef, canvas);
     };
