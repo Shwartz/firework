@@ -1,5 +1,7 @@
 import RocketClass from './RocketClass';
 import {random} from "../utils/utils";
+import {Background} from "./Background";
+import {ClearBackground} from "./ClearBackground";
 
 const randomizeRocketParams = ({ctx, x, y, img, gravity, color, angle, velocity, canvas}) => {
   return {
@@ -26,8 +28,7 @@ const randomizeRocketParams = ({ctx, x, y, img, gravity, color, angle, velocity,
  */
 export const FireworkConfig = (ctx, x, y, img, canvas) => {
   // Multiple rockets
-  console.log('===> canvas: ', canvas);
-  let gravity          = 0.1;
+  const gravity          = 0.1;
   const rocketProps    = () => randomizeRocketParams({
     ctx,
     x,
@@ -48,5 +49,6 @@ export const FireworkConfig = (ctx, x, y, img, canvas) => {
   for (let i = 0; i < 50; i++) {
     new RocketClass(rocketProps());
   }
+
+  setTimeout(() => ClearBackground(ctx, img), 3000);
 };
-// http://hslpicker.com/#f00

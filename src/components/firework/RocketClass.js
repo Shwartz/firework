@@ -56,7 +56,6 @@ function RocketClass({ctx, x, y, img, gravity, color, angle, velocity, canvas}) 
       window.requestAnimationFrame(loop);
     } else {
       // end of a loop
-      // background refresh and callback about finish(?)
     }
   };
 
