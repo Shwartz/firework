@@ -2,6 +2,7 @@ import {random} from "../utils/utils";
 import {Background} from "../firework/Background";
 import {Rocket} from "../firework/Rocket";
 import {FireworkConfig} from "../firework/FireworkConfig";
+import AnimationFrame from "../utils/AnimationFrame";
 
 export const StartFirework = ({
   gravity,
@@ -9,10 +10,10 @@ export const StartFirework = ({
   vy,
   ctx,
   imgRef,
-  animateRocket,
   canvas
 }) => {
   const direction = random(-2, 2);
+
   const boundaries = (x, y) => {
     const isX = x > 100 && x < 700;
     const isY = y > 100 && y < 470;
@@ -24,7 +25,7 @@ export const StartFirework = ({
     vx      = (vx + direction + random(-0.5, 0.5)); // direction (angle), randomize lifting of the rocket
     vy      = (vy - (4 - gravity)); // velocity and gravity
 
-    Background(ctx, imgRef, 0.4);
+    Background(ctx, imgRef, 0.2);
     ctx.strokeStyle = 'rgb(255,255,255)';
     Rocket(ctx, vx, vy);
 
@@ -36,4 +37,7 @@ export const StartFirework = ({
       FireworkConfig(ctx, vx, vy, imgRef, canvas);
     }
   };
+
+  const animateRocket = new AnimationFrame(rocket, 30);
+  animateRocket.start();
 };
