@@ -1,14 +1,15 @@
 // clear white lines from rocket
 import {Background} from "./Background";
+import {createCounter} from "../utils/utils";
 
 export const ClearBackground = (ctx, img) => {
-  let counter = 0;
+  const  counter = createCounter();
 
   const clear = () => {
-    counter = counter + 1;
-    Background(ctx, img, counter / 10);
+    const count = counter();
+    Background(ctx, img, count / 10);
 
-    if (counter < 10) {
+    if (count < 10) {
       setTimeout(clear, 100);
     }
   };

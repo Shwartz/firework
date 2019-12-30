@@ -1,7 +1,7 @@
-export const Background = (ctx, img, alpha) => {
+export const Background = (ctx, img, globalAlpha) => {
   ctx.beginPath();
   ctx.save();
-  ctx.globalAlpha = alpha;
+  ctx.globalAlpha = globalAlpha;
   ctx.drawImage(img.current, 0, 0);
   ctx.font      = '12px Courier';
   ctx.fillStyle = 'rgba(255,255,255,1)';

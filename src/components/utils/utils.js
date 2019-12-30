@@ -2,3 +2,4 @@ export const randomColorHex = () => Math.floor(Math.random() * 0xffffff).toStrin
 export const random         = (min, max) => parseFloat((Math.random() * (max - min) + min));
 export const colorHsl       = (colorRing, saturation, lightness, opacity) => `hsla(${colorRing}, ${saturation}, ${lightness}, ${opacity}`;
 export const percentage     = (num, volume) => (num * 100) / volume;
+export const createCounter  = (count = 0) => () => ++count;

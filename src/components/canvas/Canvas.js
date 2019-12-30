@@ -19,15 +19,14 @@ export default class Canvas extends React.Component {
     const canvas    = this.canvasRef.current;
     const direction = random(-2, 2);
     let gravity     = 0.1;
-    let vx          = 350;
-    let vy          = 470;
-    let intID       = 0;
+    let vx          = 350; // start vx
+    let vy          = 470; // start vy
     let globalAlpha = 0.4;
 
     ctx.drawImage(this.imgRef.current, 0, 0);
 
     const boundaries = (x, y) => {
-      const isX = x > 100 && x < 700;
+      const isX = x > 30 && x < 780;
       const isY = y > 100 && y < 470;
       return isX === true && isY === true;
     };
@@ -43,18 +42,17 @@ export default class Canvas extends React.Component {
 
       if (!boundaries(vx, vy)) {
         // Loop is over, Rocket reach maximum and explodes
-        console.log('End of step one - Rocket is up', vx, vy); //627.5 100 185
-        clearInterval(intID);
+        // console.log('End of step one - Rocket is up', vx, vy); //627.5 100 185
         Rocket(ctx, vx, vy, 'rgb(255,255,255)', 'rgb(255,255,255)');
-        animationSimple.stop();
+        animateRocket.stop();
         FireworkConfig(ctx, vx, vy, this.imgRef, canvas);
       }
     };
 
-    const animationSimple = new AnimationFrame(rocket, 30);
+    const animateRocket = new AnimationFrame(rocket, 30);
 
     this.imgRef.current.onload = () => {
-      animationSimple.start();
+      animateRocket.start();
       Background(ctx, this.imgRef, 1);
       // Bang(ctx, 527.5, 100, this.imgRef, canvas);
     };

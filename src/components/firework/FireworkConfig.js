@@ -1,6 +1,5 @@
 import RocketClass from './RocketClass';
 import {random} from "../utils/utils";
-import {Background} from "./Background";
 import {ClearBackground} from "./ClearBackground";
 
 const randomizeRocketParams = ({ctx, x, y, img, gravity, color, angle, velocity, canvas}) => {
@@ -50,5 +49,5 @@ export const FireworkConfig = (ctx, x, y, img, canvas) => {
     new RocketClass(rocketProps());
   }
 
-  setTimeout(() => ClearBackground(ctx, img), 3000);
+  setTimeout(() => ClearBackground(ctx, img), 2000);
 };

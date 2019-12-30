@@ -1,6 +1,6 @@
 import {Rocket} from "./Rocket";
 import {Background} from "./Background";
-import {colorHsl, percentage, random} from "../utils/utils";
+import {colorHsl, createCounter, percentage, random} from "../utils/utils";
 
 const boundaries = (x, y, canvas) => {
   const {width, height} = canvas;
@@ -15,7 +15,7 @@ function RocketClass({ctx, x, y, img, gravity, color, angle, velocity, canvas}) 
   this.canvas            = canvas;
   this.ctx               = ctx;
   this.img               = img;
-  this.counter           = 0;
+  this.counter           = createCounter();
   this.gravity           = gravity;
   this.steps             = parseInt(random(200, 400).toString(), 10);
   this.speedConstant     = random(0.005, 0.05);
@@ -30,18 +30,18 @@ function RocketClass({ctx, x, y, img, gravity, color, angle, velocity, canvas}) 
         }                = color;
 
   const loop = () => {
-    this.counter    = this.counter + 1;
+    this.count    = this.counter();
     this.gravity    = this.gravity + this.speedConstant;
     const color     = colorHsl(colorRing, saturation, lightness, opacity);
-    const stepsLeft = this.steps - this.counter;
+    const stepsLeft = this.steps - this.count;
 
     this.vx = (this.vx + (angle)); // direction or angle of the rocket
     this.vy = (this.vy - (velocity - this.gravity)); // velocity and gravity
 
-    if (this.counter < this.steps && this.isAnimation) {
+    if (this.count < this.steps && this.isAnimation) {
       if (stepsLeft > this.colorFadeConstant) {
         if (!boundaries(this.vx, this.vy, this.canvas)) {
-          this.steps = this.counter + this.colorFadeConstant - 1;
+          this.steps = this.count + this.colorFadeConstant - 1;
         }
         // full brightness colour
         Rocket(this.ctx, this.vx, this.vy, color, color);
